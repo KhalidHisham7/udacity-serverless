@@ -1,11 +1,11 @@
 import 'source-map-support/register'
 import { getTodos } from "../../business-logic/todos-logic"
 
-import { /*APIGatewayProxyEvent,*/ APIGatewayProxyResult, APIGatewayProxyHandler } from 'aws-lambda'
+import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } from 'aws-lambda'
 
-export const handler: APIGatewayProxyHandler = async (): Promise<APIGatewayProxyResult> => {
+export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   // TODO: Get all TODO items for a current user
-  const items = await getTodos()
+  const items = await getTodos(event)
   return {
     statusCode: 200,
     headers: {

@@ -1,9 +1,11 @@
 import { TodoDatabase } from '../data-layer/todo-database'
+import { getUserId } from '../lambda/utils'
+
+const todoDB = new TodoDatabase()
 
 
-const todoAccess = new TodoDatabase()
+export async function getTodos(event) {
+    const userId = getUserId(event)
 
-
-export async function getTodos() {
-    return await todoAccess.getTodos()
+    return await todoDB.getTodos(userId)
 }

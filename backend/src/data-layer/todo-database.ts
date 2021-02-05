@@ -7,7 +7,7 @@ export class TodoDatabase {
         private readonly index = process.env.INDEX_NAME) {
     }
 
-    async getTodos() {
+    async getTodos(userId: String) {
         console.log('Getting todos')
     
         const result = await this.docClient.query({
@@ -15,7 +15,7 @@ export class TodoDatabase {
           IndexName: this.index,
           KeyConditionExpression: "userId = :u",
           ExpressionAttributeValues: {
-            ":u": '688'
+            ":u": userId
           }
         }).promise()
         return result.Items
