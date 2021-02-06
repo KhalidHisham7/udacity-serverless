@@ -3,8 +3,8 @@ service: serverless-todo-app
 plugins:
   - serverless-webpack
   - serverless-iam-roles-per-function
-  # - serverless-aws-documentation
-  # - serverless-reqvalidator-plugin
+  - serverless-aws-documentation
+  - serverless-reqvalidator-plugin
 
 package: 
   individually: true
@@ -25,8 +25,19 @@ provider:
       Resource:
         - '*'
 
-functions:
+custom:
+  documentation:
+    api:
+      info:
+        version: v1.0.0
+        title: Todo API
+        description: Serverless application for Todos
+    models:
+      - name: TodosCreateRequest
+        contentType: application/json
+        schema: ${file(models/create-todo-request.json)}
 
+functions:
   Auth:
     handler: src/lambda/auth/auth0Authorizer.handler
 
@@ -48,12 +59,25 @@ functions:
   
   # TODO: Configure this function
   # GetTodos:
-  # CreateTodo:
-  #   handler: src/lambda/http/createTodo.handler
-  #   events:
-  #     - http:
-  #         method: post
-  #         path: todos
+  CreateTodo:
+    handler: src/lambda/http/createTodo.handler
+    events:
+      - http:
+          method: post
+          path: todos
+          cors: true
+          authorizer: Auth
+          reqValidatorName: RequestBodyValidator
+          documentation:
+            summary: Create a new Todo Item
+            description: Create a new todo Item
+            requestModels:
+              'application/json': TodosCreateRequest
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODO_TABLE}
 
   # TODO: Configure this function
   # UpdateTodo:
@@ -116,3 +140,12 @@ resources:
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL
+
+    RequestBodyValidator:
+      Type: AWS::ApiGateway::RequestValidator
+      Properties:
+        Name: 'request-body-validator'
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        ValidateRequestBody: true
+        ValidateRequestParameters: false

@@ -1,4 +1,5 @@
 import * as AWS from 'aws-sdk'
+import { TodoItem } from '../models/TodoItem'
 
 export class TodoDatabase {
     constructor(
@@ -19,5 +20,13 @@ export class TodoDatabase {
           }
         }).promise()
         return result.Items
-      }
+    }
+
+    async createTodo(item: TodoItem): Promise<TodoItem> {
+      await this.docClient.put({
+        TableName: this.todoTable,
+        Item: item
+      }).promise()
+      return item
+    }
 }
