@@ -3,6 +3,7 @@ import { getUserId } from '../lambda/utils'
 import { CreateTodoRequest } from '../requests/CreateTodoRequest'
 import * as uuid from 'uuid'
 import { TodoItem } from '../models/TodoItem'
+import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
 
 const todoDB = new TodoDatabase()
 
@@ -28,4 +29,12 @@ export async function createTodo(event) {
     }
     await todoDB.createTodo(newItem)
     return newItem
+}
+
+export async function updateTodo(event) {
+    const todoId = event.pathParameters.todoId
+    const userId = getUserId(event)
+    const updatedTodo: UpdateTodoRequest = JSON.parse(event.body)
+    const updateOperation = await todoDB.updateTodo(todoId, userId, updatedTodo)
+    return updateOperation
 }
