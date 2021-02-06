@@ -38,3 +38,9 @@ export async function updateTodo(event) {
     const updateOperation = await todoDB.updateTodo(todoId, userId, updatedTodo)
     return updateOperation
 }
+
+export async function deleteTodo(event) {
+    const todoId = event.pathParameters.todoId
+    const userId = getUserId(event)
+    return await todoDB.deleteTodo(todoId, userId)
+}

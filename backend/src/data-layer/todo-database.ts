@@ -70,4 +70,14 @@ export class TodoDatabase {
         .promise()
       return result.Items
   }
+
+  async deleteTodo(todoId: String, userId: String) {
+    return await this.docClient.delete({
+      TableName: this.todoTable,
+      Key: {
+        todoId: todoId,
+        userId: userId
+      }
+    }).promise()
+  }
 }
