@@ -1,10 +1,12 @@
 import * as AWS from 'aws-sdk'
+const AWSXRay = require('aws-xray-sdk')
+const XAWS = AWSXRay.captureAWS(AWS)
 import { TodoItem } from '../models/TodoItem'
 import { TodoUpdate } from '../models/TodoUpdate'
 
 export class TodoDatabase {
     constructor(
-        private readonly docClient = new AWS.DynamoDB.DocumentClient(),
+        private readonly docClient = new XAWS.DynamoDB.DocumentClient(),
         private readonly todoTable = process.env.TODO_TABLE,
         private readonly index = process.env.INDEX_NAME) {
     }

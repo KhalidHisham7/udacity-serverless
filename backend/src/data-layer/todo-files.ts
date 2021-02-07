@@ -1,10 +1,12 @@
 
 import * as AWS  from 'aws-sdk'
+const AWSXRay = require('aws-xray-sdk')
+const XAWS = AWSXRay.captureAWS(AWS)
 
 export class TodoFiles {
 
     constructor(
-        private readonly s3= new AWS.S3({
+        private readonly s3= new XAWS.S3({
             signatureVersion: 'v4'
         }), private readonly bucketName = process.env.S3_BUCKET) {
     }
