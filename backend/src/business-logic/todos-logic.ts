@@ -1,4 +1,5 @@
 import { TodoDatabase } from '../data-layer/todo-database'
+import { TodoFiles } from '../data-layer/todo-files'
 import { getUserId } from '../lambda/utils'
 import { CreateTodoRequest } from '../requests/CreateTodoRequest'
 import * as uuid from 'uuid'
@@ -6,6 +7,7 @@ import { TodoItem } from '../models/TodoItem'
 import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
 
 const todoDB = new TodoDatabase()
+const todoFiles = new TodoFiles()
 
 
 export async function getTodos(event) {
@@ -43,4 +45,12 @@ export async function deleteTodo(event) {
     const todoId = event.pathParameters.todoId
     const userId = getUserId(event)
     return await todoDB.deleteTodo(todoId, userId)
+}
+
+export async function upload(event) {
+    const todoId = event.pathParameters.todoId
+    const userId = getUserId(event)
+    const signedUrl = await todoFiles.getUploadURL(todoId)
+    await todoDB.updateURL(todoId, userId)
+    return signedUrl
 }

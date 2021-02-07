@@ -80,4 +80,19 @@ export class TodoDatabase {
       }
     }).promise()
   }
+
+  async updateURL(todoId: String, userId: String) {
+    return await this.docClient.update({
+      TableName: this.todoTable,
+      Key: {
+        todoId: todoId,
+        userId: userId
+      },
+      UpdateExpression: "set attachmentUrl = :signedUrl",
+      ExpressionAttributeValues: {
+        ":signedUrl": "https://timon-todo-s3bucket-dev.s3.amazonaws.com/" + todoId
+      },
+      ReturnValues: "UPDATED_NEW"
+    }).promise()
+  }
 }
