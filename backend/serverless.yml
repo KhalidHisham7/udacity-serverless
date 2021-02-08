@@ -20,6 +20,8 @@ provider:
     INDEX_NAME: user
     S3_BUCKET: timon-todo-s3bucket-dev
     SIGNED_URL_EXPIRATION: 300
+    elasticURL:
+      Fn::GetAtt: [ ElasticSearchInstance , DomainEndpoint ]
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -191,7 +193,11 @@ functions:
           - dynamodb:GetShardIterator
           - dynamodb:ListStreams
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODO_TABLE}
-
+      - Effect: Allow
+        Action:
+          - es:*
+        Resource:
+          - arn:aws:es:${self:provider.region}:*:domain/${self:provider.environment.elasticURL}/*
 
 resources:
   Resources:
@@ -274,3 +280,17 @@ resources:
               Action: 's3:GetObject'
               Resource: 'arn:aws:s3:::${self:provider.environment.S3_BUCKET}/*'
         Bucket: !Ref AttachmentsBucket
+
+    ElasticSearchInstance:
+      Type: AWS::Elasticsearch::Domain
+      Properties:
+        EBSOptions:
+          EBSEnabled: true
+          VolumeType: gp2
+          VolumeSize: 10
+        ElasticsearchClusterConfig:
+          InstanceType: t3.small.elasticsearch
+          InstanceCount: 1
+          DedicatedMasterEnabled: false
+          ZoneAwarenessEnabled: false
+        ElasticsearchVersion: 7.9
