@@ -181,23 +181,23 @@ functions:
         Resource:
           - '*'        
 
-  WriteDataToES:
-    handler: src/lambda/http/writeDataToES.handler
-    events:
-      - stream: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODO_TABLE}/stream/2016-11-20T22:55:25.566
-    iamRoleStatements:
-      - Effect: Allow
-        Action:
-          - dynamodb:DescribeStream
-          - dynamodb:GetRecords
-          - dynamodb:GetShardIterator
-          - dynamodb:ListStreams
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODO_TABLE}
-      - Effect: Allow
-        Action:
-          - es:*
-        Resource:
-          - arn:aws:es:${self:provider.region}:*:domain/${self:provider.environment.elasticURL}/*
+  # WriteDataToES:
+  #   handler: src/lambda/http/writeDataToES.handler
+  #   events:
+  #     - stream: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODO_TABLE}/stream/2016-11-20T22:55:25.566
+  #   iamRoleStatements:
+  #     - Effect: Allow
+  #       Action:
+  #         - dynamodb:DescribeStream
+  #         - dynamodb:GetRecords
+  #         - dynamodb:GetShardIterator
+  #         - dynamodb:ListStreams
+  #       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODO_TABLE}
+  #     - Effect: Allow
+  #       Action:
+  #         - es:*
+  #       Resource:
+  #         - arn:aws:es:${self:provider.region}:*:domain/${self:provider.environment.elasticURL}/*
 
 resources:
   Resources:
@@ -284,6 +284,9 @@ resources:
     ElasticSearchInstance:
       Type: AWS::Elasticsearch::Domain
       Properties:
+        DomainName: timon-dev-es
+        DomainEndpointOptions: 
+          EnforceHTTPS: true
         EBSOptions:
           EBSEnabled: true
           VolumeType: gp2
@@ -294,3 +297,13 @@ resources:
           DedicatedMasterEnabled: false
           ZoneAwarenessEnabled: false
         ElasticsearchVersion: 7.9
+        NodeToNodeEncryptionOptions:
+          Enabled: true
+        EncryptionAtRestOptions:
+          Enabled: true
+        AdvancedSecurityOptions: 
+            Enabled: true
+            InternalUserDatabaseEnabled: true
+            MasterUserOptions:
+                MasterUserName: udacity-serverless
+                MasterUserPassword: *********
