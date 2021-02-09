@@ -8,11 +8,15 @@
         },
         "dueDate":{
             "type":"string"
+        },
+        "description":{
+            "type":"string"
         }
     },
     "required":[
         "name",
-        "dueDate"
+        "dueDate",
+        "description"
     ],
     "additionalProperties": false
 }

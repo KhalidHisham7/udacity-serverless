@@ -20,8 +20,7 @@ provider:
     INDEX_NAME: user
     S3_BUCKET: timon-todo-s3bucket-dev
     SIGNED_URL_EXPIRATION: 300
-    elasticURL:
-      Fn::GetAtt: [ ElasticSearchInstance , DomainEndpoint ]
+    ELASTIC_DOMAIN: timon-dev-es
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -181,23 +180,23 @@ functions:
         Resource:
           - '*'        
 
-  # WriteDataToES:
-  #   handler: src/lambda/http/writeDataToES.handler
-  #   events:
-  #     - stream: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODO_TABLE}/stream/2016-11-20T22:55:25.566
-  #   iamRoleStatements:
-  #     - Effect: Allow
-  #       Action:
-  #         - dynamodb:DescribeStream
-  #         - dynamodb:GetRecords
-  #         - dynamodb:GetShardIterator
-  #         - dynamodb:ListStreams
-  #       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODO_TABLE}
-  #     - Effect: Allow
-  #       Action:
-  #         - es:*
-  #       Resource:
-  #         - arn:aws:es:${self:provider.region}:*:domain/${self:provider.environment.elasticURL}/*
+  WriteDataToES:
+    handler: src/lambda/http/writeDataToES.handler
+    events:
+      - stream: arn:aws:dynamodb:${self:provider.region}:716925649971:table/${self:provider.environment.TODO_TABLE}/stream/2021-02-09T02:09:23.521
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:DescribeStream
+          - dynamodb:GetRecords
+          - dynamodb:GetShardIterator
+          - dynamodb:ListStreams
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODO_TABLE}
+      - Effect: Allow
+        Action:
+          - es:*
+        Resource:
+          - arn:aws:es:${self:provider.region}:*:domain/${self:provider.environment.ELASTIC_DOMAIN}/*
 
 resources:
   Resources:
@@ -306,4 +305,4 @@ resources:
             InternalUserDatabaseEnabled: true
             MasterUserOptions:
                 MasterUserName: udacity-serverless
-                MasterUserPassword: *********
+                MasterUserPassword: Htmko1206-1965
