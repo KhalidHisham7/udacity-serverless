@@ -20,7 +20,7 @@ provider:
     INDEX_NAME: user
     S3_BUCKET: timon-todo-s3bucket-dev
     SIGNED_URL_EXPIRATION: 300
-    ELASTIC_DOMAIN: timon-dev-es
+    ELASTIC_DOMAIN: timon-dev
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -196,7 +196,7 @@ functions:
         Action:
           - es:*
         Resource:
-          - arn:aws:es:${self:provider.region}:*:domain/${self:provider.environment.ELASTIC_DOMAIN}/*
+          - arn:aws:es:${self:provider.region}:*:domain/${self:provider.environment.ELASTIC_DOMAIN}
 
 resources:
   Resources:
@@ -283,7 +283,7 @@ resources:
     ElasticSearchInstance:
       Type: AWS::Elasticsearch::Domain
       Properties:
-        DomainName: timon-dev-es
+        DomainName: timon-dev
         DomainEndpointOptions: 
           EnforceHTTPS: true
         EBSOptions:
@@ -295,7 +295,7 @@ resources:
           InstanceCount: 1
           DedicatedMasterEnabled: false
           ZoneAwarenessEnabled: false
-        ElasticsearchVersion: 7.9
+        ElasticsearchVersion: 7.1
         NodeToNodeEncryptionOptions:
           Enabled: true
         EncryptionAtRestOptions:
@@ -304,5 +304,5 @@ resources:
             Enabled: true
             InternalUserDatabaseEnabled: true
             MasterUserOptions:
-                MasterUserName: udacity-serverless
-                MasterUserPassword: Htmko1206-1965
+                MasterUserName: username
+                MasterUserPassword: password
