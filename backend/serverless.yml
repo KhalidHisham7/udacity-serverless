@@ -304,5 +304,5 @@ resources:
             Enabled: true
             InternalUserDatabaseEnabled: true
             MasterUserOptions:
-                MasterUserName: udacity-serverless
-                MasterUserPassword: Htmko1206-1965
+                MasterUserName: *********
+                MasterUserPassword: ********
