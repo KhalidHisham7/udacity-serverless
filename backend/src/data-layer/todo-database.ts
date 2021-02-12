@@ -41,12 +41,13 @@ export class TodoDatabase {
             todoId: todoId,
             userId: userId
           },
-          UpdateExpression: "set #namefield = :name, dueDate=:dueDate, done=:done",
+          UpdateExpression: "set #namefield = :name, dueDate=:dueDate, done=:done, description=:desc",
           ConditionExpression: 'attribute_exists(userId)',
           ExpressionAttributeValues: {
             ":name": updatedTodo.name,
             ":dueDate": updatedTodo.dueDate,
-            ":done": updatedTodo.done
+            ":done": updatedTodo.done,
+            ":desc": updatedTodo.description
           },
           ExpressionAttributeNames: {
             "#namefield": "name"

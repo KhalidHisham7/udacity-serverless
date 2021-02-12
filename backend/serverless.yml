@@ -305,4 +305,4 @@ resources:
             InternalUserDatabaseEnabled: true
             MasterUserOptions:
                 MasterUserName: username
-                MasterUserPassword: password
+                MasterUserPassword: pw
