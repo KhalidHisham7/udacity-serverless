@@ -33,7 +33,7 @@ Upon creating, updating and deleting TODO items they get synced to Elasticsearch
 
 # Validating the Elasticsearch flow
 * You will need to visit this URL [Kibana link] (https://search-timon-dev-ztcdorjuka4lwb75sz72h4qoly.us-east-2.es.amazonaws.com/_plugin/kibana/)
-* Then login using the provided username and password, and search for index "description" to check for data
+* Then login using the provided username and password, and search for index "description" in the "Discover" tab to check for data
 
 # How to run the application
 
