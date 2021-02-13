@@ -2,7 +2,7 @@
 
 This project simply creates, updates and deletes TODO items.
 # Features
-###### Create TODO (Gets writted to ES)
+###### Create TODO (Gets writtem to ES)
 ###### Update TODO (Update gets channelled to ES)
 ###### Delete TODO (Reflected to ES)
 ###### List TODO
@@ -32,7 +32,7 @@ Upon creating, updating and deleting TODO items they get synced to Elasticsearch
 * This is done not using simple functions, it is implemented using events on data streams (DynamoDB streams), upon new events in dynamodb the writeToES function is triggered and deals with the event as it needs (create, update or delete)
 
 # Validating the Elasticsearch flow
-* You will need to visit this URL [Kibana link] (https://search-timon-dev-ztcdorjuka4lwb75sz72h4qoly.us-east-2.es.amazonaws.com/_plugin/kibana/)
+* You will need to visit this URL [Kibana link](https://search-timon-dev-ztcdorjuka4lwb75sz72h4qoly.us-east-2.es.amazonaws.com/_plugin/kibana/)
 * Then login using the provided username and password, and search for index "description" in the "Discover" tab to check for data
 
 # How to run the application
